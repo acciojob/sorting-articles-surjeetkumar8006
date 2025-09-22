@@ -20,13 +20,13 @@ function stripArticle(band) {
 }
 
 // Sort ignoring leading articles
-const sortedBands = bands.slice().sort((a, b) => {
-  let bandA = stripArticle(a).toLowerCase();
-  let bandB = stripArticle(b).toLowerCase();
-  return bandA.localeCompare(bandB);
+const sortedBands = bands.sort((a, b) => {
+  const aStripped = stripArticle(a).toLowerCase();
+  const bStripped = stripArticle(b).toLowerCase();
+  return aStripped.localeCompare(bStripped);
 });
 
-// Insert into DOM
+// Insert into the DOM
 const ul = document.getElementById("band");
 sortedBands.forEach(band => {
   const li = document.createElement("li");
