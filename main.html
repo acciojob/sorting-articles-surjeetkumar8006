@@ -4,11 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alphabetical Article Sorter</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .info-box {
+            background-color: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .info-box p {
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+            background-color: #ffeaa7;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        #bands {
+            list-style-type: none;
+            padding: 0;
+            counter-reset: article-counter;
+        }
+        
+        #bands li {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            border-left: 4px solid #3498db;
+            position: relative;
+            counter-increment: article-counter;
+        }
+        
+        #bands li::before {
+            content: counter(article-counter);
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        #bands li:hover {
+            background-color: #e3f2fd;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        #bands li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>Alphabetical Article Sorter</h1>
-    <ul id="band"></ul>
-    <script src="script.js"></script>
+    <div class="container">
+        <h1>Alphabetical Article Sorter</h1>
+        <p class="subtitle">Articles sorted ignoring 'A', 'An', and 'The'</p>
+        
+        <div class="info-box">
+            <p>This page displays a list of articles sorted alphabetically while ignoring the words <span class="highlight">'A'</span>, <span class="highlight">'An'</span>, and <span class="highlight">'The'</span> at the beginning of each title.</p>
+            <p>The original order is preserved in the display, but sorting is done based on the title without these articles.</p>
+        </div>
+        
+        <ul id="bands"></ul>
+        
+        <div class="footer">
+            <p>Sorted alphabetically (ignoring articles) | Total articles: <span id="count">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Article data
+        const bands = [
+            'The Plot in You', 
+            'The Devil Wears Prada', 
+            'Pierce the Veil', 
+            'Norma Jean', 
+            'The Bled', 
+            'Say Anything', 
+            'The Midway State', 
+            'We Came as Romans', 
+            'Counterparts', 
+            'Oh, Sleeper', 
+            'A Skylit Drive', 
+            'Anywhere But Here', 
+            'An Old Dog'
+        ];
+
+        // Function to remove articles for sorting
+        function stripArticles(bandName) {
+            return bandName.replace(/^(a |an |the )/i, '').trim();
+        }
+
+        // Sort the bands array alphabetically ignoring articles
+        const sortedBands = bands.sort((a, b) => {
+            const nameA = stripArticles(a);
+            const nameB = stripArticles(b);
+            return nameA.localeCompare(nameB);
+        });
+
+        // Get the unordered list element - FIXED: changed id from 'band' to 'bands'
+        const bandList = document.getElementById('bands');
+
+        // Create list items for each band
+        sortedBands.forEach(band => {
+            const listItem = document.createElement('li');
+            listItem.textContent = band;
+            bandList.appendChild(listItem);
+        });
+
+        // Update article count
+        document.getElementById('count').textContent = sortedBands.length;
+        
+        // Log for verification
+        console.log('Original order:', bands);
+        console.log('Sorted order (ignoring articles):', sortedBands);
+    </script>
 </body>
 </html>
